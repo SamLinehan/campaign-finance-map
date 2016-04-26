@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Hi Sam!"
+    return "Welcome to the Campaign Finance Map"
 
 @app.route("/candidates")
 def get_candidates():
@@ -23,13 +23,8 @@ def get_candidates():
     }
     data = requests.get(CANDIDATE_URL, headers=headers)
     print (data.json())
-    return data.json
-
-
-@app.route("/test")
-def test():
-    return "This is a test"
+    return jsonify(data.json())
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(threaded=True)

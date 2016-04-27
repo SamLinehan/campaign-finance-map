@@ -3,15 +3,80 @@
   <head>
     <meta charset="utf-8">
     <title>Campaign Finance Map</title>
-    <link rel="stylesheet" href="./css/styles.css" media="screen" title="no title" charset="utf-8">
+    <!-- <link rel="stylesheet" href="./css/styles.css" media="screen" title="no title" charset="utf-8"> -->
+    <style>
+    #map {
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    .background {
+      fill: none;
+      pointer-events: all;
+    }
+    #countries, #states {
+      fill: #cde;
+      stroke: #fff;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    #countries .active, #states .active {
+      fill: #89a;
+    }
+    #cities {
+      stroke-width: 0;
+    }
+    .city {
+      fill: #345;
+      stroke: #fff;
+    }
+    pre.prettyprint {
+      border: 1px solid #ccc;
+      margin-bottom: 0;
+      padding: 9.5px;
+    }
+</style>
   </head>
   <body>
+    <div id="map">
+
+    </div>
     <main ui-view>
 
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
     <script src="https://angular-ui.github.io/ui-router/release/angular-ui-router.js" charset="utf-8"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script>
+    var width = 960;
+    var height = 1160;
+
+    var projection = d3.geo.albers()
+      .center([10, 110])
+      // .rotate([10, 0])
+      .parallels([25, 50])
+      .scale(700)
+      .translate([width / 2, height / 2])
+
+    var path = d3.geo.path()
+      .projection(projection)
+
+    var svg = d3.select("#map").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    d3.json("./ne_50m_admin_1_states_provinces_lakes/50_states.json", function(error, us) {
+      console.log(us.objects.states);
+      if(error) {
+        console.error(error);
+      }
+      svg.append("path")
+        .datum(topojson.feature(us, us.objects.states))
+        .attr("d", path);
+      })
+
+    </script>
     <script src="./app/app.js"></script>
     <script src="./app/controllers.js"></script>
     <script src="./app/services.js"></script>

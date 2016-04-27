@@ -20,14 +20,13 @@ def hello():
 @app.route("/candidates")
 def get_candidates():
     key = os.environ.get("CAMPAIGN_FINANCE_API_KEY")
-    url = os.environ.get("TEST_URL")
+    url = os.environ.get("CANDIDATE_URL")
     headers = {
         'X-API-Key': key
     }
     data = requests.get(url, headers=headers)
     print (data.json())
     return jsonify(data.json())
-    # return jsonify([{'firstName': 'Sam', 'lastName': 'Linehan'}])
 
 
 if __name__ == "__main__":

@@ -11,6 +11,8 @@ load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 
+CORS(app, resources={r'/*' : {"origins": "*"}}, allow_headers='Content-Type')
+
 @app.route("/")
 def hello():
     return "Welcome to the Campaign Finance Map"
@@ -18,12 +20,14 @@ def hello():
 @app.route("/candidates")
 def get_candidates():
     key = os.environ.get("CAMPAIGN_FINANCE_API_KEY")
+    url = os.environ.get("TEST_URL")
     headers = {
         'X-API-Key': key
     }
-    data = requests.get(CANDIDATE_URL, headers=headers)
+    data = requests.get(url, headers=headers)
     print (data.json())
     return jsonify(data.json())
+    # return jsonify([{'firstName': 'Sam', 'lastName': 'Linehan'}])
 
 
 if __name__ == "__main__":

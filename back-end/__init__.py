@@ -18,7 +18,7 @@ CORS(app, resources={r'/*' : {"origins": "*"}}, allow_headers='Content-Type')
 candidate_data = {}
 
 def get_data():
-    threading.Timer(30.0, get_data).start()
+    threading.Timer(86400.0, get_data).start()
     key = os.environ.get("CAMPAIGN_FINANCE_API_KEY")
     url = os.environ.get("CANDIDATE_URL")
     headers = {
